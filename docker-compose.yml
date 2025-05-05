@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  rag:
+    build: .
+    container_name: rag_fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      # Каталог с документами ФСТЭК
+      - ./fstec_docs:/app/fstec_docs:ro
+      # Каталог/файл с индексом FAISS (создаётся после первого запуска)
+      - ./fstec_faiss.idx:/app/fstec_faiss.idx
+    environment:
+      # Кэш моделей transformers внутри контейнера
+      - TRANSFORMERS_CACHE=/app/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    # Для GPU‑хостов убедитесь, что установлен Docker >= 19.03 со включённым runtime nvidia.
+    # Для CPU‑хостов эту секцию можно удалить.
