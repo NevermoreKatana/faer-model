@@ -2,7 +2,8 @@ version: "3.9"
 
 services:
   rag:
-    build: .
+    # build: .
+    image: faer-model-rag:latest
     container_name: rag_fastapi
     ports:
       - "8000:8000"
